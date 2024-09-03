@@ -1,0 +1,31 @@
+﻿@page "/"
+@using DevExpress.AIIntegration.Blazor.RichEdit
+@using DevExpress.Blazor.RichEdit
+@using System.Reflection
+
+<DxRichEdit DocumentContent="DocumentContent" CssClass="my-editor">
+    <AdditionalSettings>
+        <SummaryAISettings />
+        <ExplainAISettings />
+        <ProofreadAISettings />
+        <ExpandAISettings />
+        <ShortenAISettings />
+        <CustomAISettings />
+        <RewriteAISettings />
+        <ToneAISettings />
+        <TranslateAISettings Languages="@("German, French, Chinese")" />
+    </AdditionalSettings>
+</DxRichEdit>
+
+@code {
+    const string DocumentResourceName = "DevExpress.AI.Samples.Blazor.Editors.Docs.Example.docx";
+    byte[] DocumentContent { get; set; }
+    protected override void OnInitialized() {
+        using(MemoryStream ms = new MemoryStream()) {
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(DocumentResourceName);
+            stream.CopyTo(ms);
+            DocumentContent = ms.ToArray();
+        }
+        base.OnInitialized();
+    }
+}
