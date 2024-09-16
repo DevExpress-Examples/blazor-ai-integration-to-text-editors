@@ -5,20 +5,20 @@
 <!-- default badges end -->
 # Rich Text Editor and HTML Editor for Blazor - How to integrate AI-powered extensions
 
-This example enables AI-powered extensions for Rich Text Editor and HTML Editor. These extensions supply AI functions that process editor content.
+This example enables AI-powered extensions for both the DevExpress Blazor Rich Text Editor and HTML Editor. These extensions supply AI functions designed to process text/HTML content.
 
 ## Implementation Details
 
-[DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit) and [DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor) components implement the `AdditionalSettings` property. You can populate this property with commands that allow users to process editor text. Available commands for both editors are the following:
+Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalSettings` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
 
 * `CustomAISettings` allows user to process text according to a custom prompt.
 * `ExpandAISettings` expands the text.
 * `ExplainAISettings` explains the text.
 * `ProofreadAISettings` proofreads the text.
-* `RewriteAISettings` rewrites the text in the specified style.
+* `RewriteAISettings` rewrite text using a specified style.
 * `ShortenAISettings` shortens the text.
 * `SummaryAISettings` summarizes the text.
-* `ToneAISettings` rewrites the text in the specified tone.
+* `ToneAISettings` rewrite text using a specified tone.
 * `TranslateAISettings` translates the text into the specified language.
 
 ### Register AI Services
@@ -40,7 +40,7 @@ builder.Services.AddDevExpressAI((config) => {
 });
 ```
 
-### Enable AI-powered extension for Rich Text Editor 
+### Enable AI-powered extension for the DevExpress Rich Text Editor 
 
 AI-powered extension for Rich Text Editor adds AI-related commands to the editor's context menu. 
 
@@ -67,9 +67,9 @@ Declare DxRichEdit's `AdditionalSettings` and populate it with commands in the f
 
 ![](richedit.png)
 
-### Enable AI-powered extension for HTML Editor
+### Enable AI-powered extension for the DevExpress HTML Editor
 
-AI-powered extension for HTML Editor adds AI-related commands to the editor's toolbar. 
+The AI-powered extension for our HTML Editor adds AI-related commands to the editor's toolbar.
 
 Declare DxHtmlEditor's `AdditionalSettings` and populate it with commands in the following manner:
 
