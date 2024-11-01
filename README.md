@@ -83,7 +83,7 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
 
 <DxHtmlEditor @bind-Markup="Value" CssClass="my-editor" BindMarkupMode="HtmlEditorBindMarkupMode.OnLostFocus">
     <AdditionalItems>
-        <ShakespeareAIToolbarItem></ShakespeareAIToolbarItem>
+        <ShakespeareAIToolbarItem />
         <SummarizeAIToolbarItem />
         <ExplainAIToolbarItem />
         <ProofreadAIToolbarItem />
