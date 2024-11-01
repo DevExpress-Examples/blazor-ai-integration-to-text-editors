@@ -9,34 +9,37 @@ This example enables AI-powered extensions for both the DevExpress Blazor Rich T
 
 ## Implementation Details
 
-Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalSettings` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
+Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalItems` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
 
-* `CustomAISettings` allows user to process text according to a custom prompt.
-* `ExpandAISettings` expands the text.
-* `ExplainAISettings` explains the text.
-* `ProofreadAISettings` proofreads the text.
-* `RewriteAISettings` rewrite text using a specified style.
-* `ShortenAISettings` shortens the text.
-* `SummaryAISettings` summarizes the text.
-* `ToneAISettings` rewrite text using a specified tone.
-* `TranslateAISettings` translates the text into the specified language.
+* **Ask AI Assistant** allows user to process text according to a custom prompt.
+* **Change Style** rewrite text using a specified style.
+* **Change Tone** rewrite text using a specified tone.
+* **Expand** expands the text.
+* **Explain** explains the text.
+* **Proofread** proofreads the text.
+* **Shorten** shortens the text.
+* **Summarize** summarizes the text.
+* **Translate** translates the text into the specified language.
 
 ### Register AI Services
 
 Add the following code to the _Program.cs_ file to register AI services in the application:
 
 ```cs
-using DevExpress.AIIntegration;
-
+using Azure;
+using Azure.AI.OpenAI;
+using DevExpress.Blazor;
+using Microsoft.Extensions.AI;
+...
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-...
+
+builder.Services.AddDevExpressBlazor();
 builder.Services.AddDevExpressAI((config) => {
     var client = new AzureOpenAIClient(
         new Uri(azureOpenAIEndpoint),
-        new AzureKeyCredential(azureOpenAIKey));
-    config.RegisterChatClientOpenAIService(client, "gpt4o");
-    config.RegisterOpenAIAssistants(client, "gpt4o");
+        new AzureKeyCredential(azureOpenAIKey)).AsChatClient("gpt4o");
+    config.RegisterChatClient(client);
 });
 ```
 
@@ -44,24 +47,25 @@ builder.Services.AddDevExpressAI((config) => {
 
 AI-powered extension for Rich Text Editor adds AI-related commands to the editor's context menu. 
 
-Declare DxRichEdit's `AdditionalSettings` and populate it with commands in the following manner:
+Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.AdditionalItems?v=24.2) and populate it with commands in the following manner:
 
 ```razor
 @using DevExpress.AIIntegration.Blazor.RichEdit
 @using DevExpress.Blazor.RichEdit
 
 <DxRichEdit DocumentContent="DocumentContent" CssClass="my-editor">
-    <AdditionalSettings>
-        <SummaryAISettings />
-        <ExplainAISettings />
-        <ProofreadAISettings />
-        <ExpandAISettings />
-        <ShortenAISettings />
-        <CustomAISettings />
-        <RewriteAISettings />
-        <ToneAISettings />
-        <TranslateAISettings Languages="@("German, French, Chinese")" />
-    </AdditionalSettings>
+    <AdditionalItems>
+        <ShakespeareAIContextMenuItem />
+        <SummarizeAIContextMenuItem />
+        <ExplainAIContextMenuItem />
+        <ProofreadAIContextMenuItem />
+        <ExpandAIContextMenuItem />
+        <ShortenAIContextMenuItem />
+        <AskAssistantAIContextMenuItem />
+        <ChangeStyleAIContextMenuItem />
+        <ChangeToneAIContextMenuItem />
+        <TranslateAIContextMenuItem Languages="@("German, French, Chinese")" />
+    </AdditionalItems>
 </DxRichEdit>
 ```
 
@@ -71,23 +75,25 @@ Declare DxRichEdit's `AdditionalSettings` and populate it with commands in the f
 
 The AI-powered extension for our HTML Editor adds AI-related commands to the editor's toolbar.
 
-Declare DxHtmlEditor's `AdditionalSettings` and populate it with commands in the following manner:
+Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.AdditionalItems?v=24.2) and populate it with commands in the following manner:
 
 ```razor
+@using DevExpress.AI.Samples.Blazor.Editors.Components.AdditionalItems
 @using DevExpress.AIIntegration.Blazor.HtmlEditor
 
 <DxHtmlEditor @bind-Markup="Value" CssClass="my-editor" BindMarkupMode="HtmlEditorBindMarkupMode.OnLostFocus">
-    <AdditionalSettings>
-        <SummaryAISettings />
-        <ExplainAISettings />
-        <ProofreadAISettings />
-        <ExpandAISettings />
-        <ShortenAISettings />
-        <CustomAISettings />
-        <RewriteAISettings />
-        <ToneAISettings />
-        <TranslateAISettings Languages="@("German, French, Chinese")" />
-    </AdditionalSettings>
+    <AdditionalItems>
+        <ShakespeareAIToolbarItem></ShakespeareAIToolbarItem>
+        <SummarizeAIToolbarItem />
+        <ExplainAIToolbarItem />
+        <ProofreadAIToolbarItem />
+        <ExpandAIToolbarItem />
+        <ShortenAIToolbarItem />
+        <AskAssistantAIToolbarItem />
+        <ChangeStyleAIToolbarItem />
+        <ChangeToneAIToolbarItem />
+        <TranslateAIToolbarItem Languages="@("German, French, Chinese")" />
+    </AdditionalItems>
 </DxHtmlEditor>
 ```
 
@@ -99,12 +105,10 @@ Declare DxHtmlEditor's `AdditionalSettings` and populate it with commands in the
 * [HtmlEditor.razor](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/Pages/HtmlEditor.razor)
 * [Program.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Program.cs)
 
-<!-- add later
 ## Documentation
 
-- link
-- link
--->
+*[AI-Powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
+*[AI-Powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
 
 ## More Examples
 
