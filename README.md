@@ -107,8 +107,8 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
 
 ## Documentation
 
-*[AI-Powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
-*[AI-Powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
+* [AI-Powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
+* [AI-Powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
 
 ## More Examples
 
