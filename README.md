@@ -47,6 +47,21 @@ builder.Services.AddDevExpressAI((config) => {
 
 AI-powered extension for Rich Text Editor adds AI-related commands to the editor's context menu. 
 
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.RichEdit?v=24.2) or implement custom commands according to your needs. This example implements the **Rewrite like Shakespeare** context menu item.
+
+```csharp
+public class ShakespeareAIContextMenuItem : BaseAIContextMenuItem {
+    [Inject] IAIExtensionsContainer? aIExtensionsContainer { get; set; }
+
+    protected override string DefaultItemText => "Rewrite like Shakespeare";
+
+    protected override Task<TextResponse> GetCommandTextResult(string text) {
+        var customExtension = aIExtensionsContainer.CreateCustomPromptExtension();
+        return customExtension.ExecuteAsync(new CustomPromptRequest("Rewrite the following text in William Shakespeare style.", text));
+    }
+}
+```
+
 Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.AdditionalItems?v=24.2) and populate it with commands in the following manner:
 
 ```razor
@@ -74,6 +89,21 @@ Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExp
 ### Enable AI-powered extension for the DevExpress HTML Editor
 
 The AI-powered extension for our HTML Editor adds AI-related commands to the editor's toolbar.
+
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.HtmlEditor?v=24.2) or implement custom commands according to your needs. This example implements the **Rewrite like Shakespeare** toolbar item.
+
+```csharp
+public class ShakespeareAIToolbarItem: BaseAIToolbarItem {
+    [Inject] IAIExtensionsContainer? aIExtensionsContainer { get; set; }
+
+    protected override string DefaultItemText => "Rewrite like Shakespeare";
+
+    protected override Task<TextResponse> GetCommandTextResult(string text) {
+        var customExtension = aIExtensionsContainer.CreateCustomPromptExtension();
+        return customExtension.ExecuteAsync(new CustomPromptRequest("Rewrite the following text in William Shakespeare style.", text));
+    }
+}
+```
 
 Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.AdditionalItems?v=24.2) and populate it with commands in the following manner:
 
@@ -103,6 +133,8 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
 
 * [RichEdit.razor](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/Pages/RichEdit.razor)
 * [HtmlEditor.razor](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/Pages/HtmlEditor.razor)
+* [ShakespeareAIContextMenuItem.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/AdditionalItems/ShakespeareAIContextMenuItem.cs)
+* [ShakespeareAIToolbarItem.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/AdditionalItems/ShakespeareAIToolbarItem.cs)
 * [Program.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Program.cs)
 
 ## Documentation
