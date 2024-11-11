@@ -36,6 +36,7 @@ using Microsoft.Extensions.AI;
 ...
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
+string deploymentName = "gpt4o";
 
 builder.Services.AddDevExpressBlazor();
 IChatClient asChatClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureOpenAIEndpoint),
@@ -43,7 +44,6 @@ IChatClient asChatClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureOp
     .AsChatClient(deploymentName);
 builder.Services.AddSingleton(asChatClient);
 builder.Services.AddDevExpressAI();
-});
 ```
 
 ### Enable AI-powered extension for the DevExpress Blazor Rich Text Editor
