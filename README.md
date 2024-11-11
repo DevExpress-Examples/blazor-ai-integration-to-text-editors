@@ -11,15 +11,15 @@ This example enables AI-powered extensions for both the DevExpress Blazor Rich T
 
 Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalItems` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
 
-* **Ask AI Assistant** allows user to process text according to a custom prompt.
+* **Ask AI Assistant** allows user to process text based on a custom prompt.
 * **Change Style** rewrite text using a specified style.
 * **Change Tone** rewrite text using a specified tone.
-* **Expand** expands the text.
-* **Explain** explains the text.
-* **Proofread** proofreads the text.
-* **Shorten** shortens the text.
-* **Summarize** summarizes the text.
-* **Translate** translates the text into the specified language.
+* **Expand** expands text.
+* **Explain** explains text.
+* **Proofread** proofreads text.
+* **Shorten** shortens text.
+* **Summarize** summarizes text.
+* **Translate** translates text into the specified language.
 
 ### Register AI Services
 
@@ -35,19 +35,22 @@ string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_EN
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
 
 builder.Services.AddDevExpressBlazor();
-builder.Services.AddDevExpressAI((config) => {
-    var client = new AzureOpenAIClient(
-        new Uri(azureOpenAIEndpoint),
-        new AzureKeyCredential(azureOpenAIKey)).AsChatClient("gpt4o");
-    config.RegisterChatClient(client);
+IChatClient asChatClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureOpenAIEndpoint),
+    new System.ClientModel.ApiKeyCredential(azureOpenAIKey))
+    .AsChatClient(deploymentName);
+builder.Services.AddSingleton(asChatClient);
+builder.Services.AddDevExpressAI();
 });
 ```
 
-### Enable AI-powered extension for the DevExpress Rich Text Editor 
+### Enable AI-powered extension for the DevExpress Blazor Rich Text Editor
 
-AI-powered extension for Rich Text Editor adds AI-related commands to the editor's context menu. 
+> [!NOTE]  
+> DevExpress AI-powered extensions follow the "bring your own key" principle. DevExpress does not offer a REST API and does not ship any built-in LLMs/SLMs. You need an active Azure/Open AI subscription to obtain the REST API endpoint, key, and model deployment name. These variables must be specified at application startup to register AI clients and enable DevExpress AI-powered Extensions in your application.
 
-You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.RichEdit?v=24.2) or implement custom commands according to your needs. This example implements the **Rewrite like Shakespeare** context menu item.
+AI-powered extension for our Blazor Rich Text Editor adds AI-related commands to the editor's context menu.
+
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.RichEdit?v=24.2) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** context menu item.
 
 ```csharp
 public class ShakespeareAIContextMenuItem : BaseAIContextMenuItem {
@@ -86,11 +89,11 @@ Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExp
 
 ![](richedit.png)
 
-### Enable AI-powered extension for the DevExpress HTML Editor
+### Enable AI-powered extension for the DevExpress Blazor HTML Editor
 
-The AI-powered extension for our HTML Editor adds AI-related commands to the editor's toolbar.
+The AI-powered extension for our Blazor HTML Editor adds AI-related commands to the editor's toolbar.
 
-You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.HtmlEditor?v=24.2) or implement custom commands according to your needs. This example implements the **Rewrite like Shakespeare** toolbar item.
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.HtmlEditor?v=24.2) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** toolbar item.
 
 ```csharp
 public class ShakespeareAIToolbarItem: BaseAIToolbarItem {
@@ -139,8 +142,9 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
 
 ## Documentation
 
-* [AI-Powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
-* [AI-Powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
+* [DevExpress AI-powered Extensions for Blazor](https://docs.devexpress.com/Blazor/405228/ai-powered-extensions?v=24.2)
+* [AI-powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
+* [AI-powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
 
 ## More Examples
 
