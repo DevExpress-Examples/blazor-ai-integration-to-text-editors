@@ -31,18 +31,19 @@ Add the following code to the _Program.cs_ file to register AI services in the a
 ```cs
 using Azure;
 using Azure.AI.OpenAI;
-using DevExpress.Blazor;
+using DevExpress.AI.Samples.Blazor.Editors.Components;
 using Microsoft.Extensions.AI;
 ...
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-string deploymentName = "gpt4o";
+string deploymentName = string.Empty;
 
+IChatClient chatClient = new AzureOpenAIClient(
+    new Uri(azureOpenAIEndpoint),
+    new AzureKeyCredential(azureOpenAIKey)).AsChatClient(deploymentName);
+    
 builder.Services.AddDevExpressBlazor();
-IChatClient asChatClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureOpenAIEndpoint),
-    new System.ClientModel.ApiKeyCredential(azureOpenAIKey))
-    .AsChatClient(deploymentName);
-builder.Services.AddSingleton(asChatClient);
+builder.Services.AddChatClient(config => config.Use(chatClient));
 builder.Services.AddDevExpressAI();
 ```
 

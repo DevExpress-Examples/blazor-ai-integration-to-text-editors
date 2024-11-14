@@ -1,7 +1,6 @@
 ﻿using Azure;
 using Azure.AI.OpenAI;
 using DevExpress.AI.Samples.Blazor.Editors.Components;
-using DevExpress.Blazor;
 using Microsoft.Extensions.AI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,10 +11,11 @@ builder.Services.AddRazorComponents()
 
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
+string deploymentName = string.Empty;
 
 IChatClient chatClient = new AzureOpenAIClient(
     new Uri(azureOpenAIEndpoint),
-    new AzureKeyCredential(azureOpenAIKey)).AsChatClient("gpt4o");
+    new AzureKeyCredential(azureOpenAIKey)).AsChatClient(deploymentName);
 
 builder.Services.AddDevExpressBlazor();
 builder.Services.AddChatClient(config => config.Use(chatClient));
