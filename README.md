@@ -1,5 +1,4 @@
 <!-- default badges list -->
-![](https://img.shields.io/endpoint?url=https://codecentral.devexpress.com/api/v1/VersionRange/851771053/24.2.1%2B)
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/T1251646)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 [![](https://img.shields.io/badge/💬_Leave_Feedback-feecdd?style=flat-square)](#does-this-example-address-your-development-requirementsobjectives)
@@ -10,85 +9,124 @@ This example enables AI-powered extensions for both the DevExpress Blazor Rich T
 
 ## Implementation Details
 
-Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalSettings` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
+Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalItems` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
 
-* `CustomAISettings` allows user to process text according to a custom prompt.
-* `ExpandAISettings` expands the text.
-* `ExplainAISettings` explains the text.
-* `ProofreadAISettings` proofreads the text.
-* `RewriteAISettings` rewrite text using a specified style.
-* `ShortenAISettings` shortens the text.
-* `SummaryAISettings` summarizes the text.
-* `ToneAISettings` rewrite text using a specified tone.
-* `TranslateAISettings` translates the text into the specified language.
+* **Ask AI Assistant** allows user to process text based on a custom prompt.
+* **Change Style** rewrite text using a specified style.
+* **Change Tone** rewrite text using a specified tone.
+* **Expand** expands text.
+* **Explain** explains text.
+* **Proofread** proofreads text.
+* **Shorten** shortens text.
+* **Summarize** summarizes text.
+* **Translate** translates text into the specified language.
 
 ### Register AI Services
+
+> [!NOTE]  
+> DevExpress AI-powered extensions follow the "bring your own key" principle. DevExpress does not offer a REST API and does not ship any built-in LLMs/SLMs. You need an active Azure/Open AI subscription to obtain the REST API endpoint, key, and model deployment name. These variables must be specified at application startup to register AI clients and enable DevExpress AI-powered Extensions in your application.
 
 Add the following code to the _Program.cs_ file to register AI services in the application:
 
 ```cs
-using DevExpress.AIIntegration;
-
+using Azure;
+using Azure.AI.OpenAI;
+using DevExpress.Blazor;
+using Microsoft.Extensions.AI;
+...
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-...
-builder.Services.AddDevExpressAI((config) => {
-    var client = new AzureOpenAIClient(
-        new Uri(azureOpenAIEndpoint),
-        new AzureKeyCredential(azureOpenAIKey));
-    config.RegisterChatClientOpenAIService(client, "gpt4o");
-    config.RegisterOpenAIAssistants(client, "gpt4o");
-});
+string deploymentName = "gpt4o";
+
+builder.Services.AddDevExpressBlazor();
+IChatClient asChatClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureOpenAIEndpoint),
+    new System.ClientModel.ApiKeyCredential(azureOpenAIKey))
+    .AsChatClient(deploymentName);
+builder.Services.AddSingleton(asChatClient);
+builder.Services.AddDevExpressAI();
 ```
 
-### Enable AI-powered extension for the DevExpress Rich Text Editor 
+### Enable AI-powered extension for the DevExpress Blazor Rich Text Editor
 
-AI-powered extension for Rich Text Editor adds AI-related commands to the editor's context menu. 
+AI-powered extension for our Blazor Rich Text Editor adds AI-related commands to the editor's context menu.
 
-Declare DxRichEdit's `AdditionalSettings` and populate it with commands in the following manner:
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.RichEdit?v=24.2) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** context menu item.
+
+```csharp
+public class ShakespeareAIContextMenuItem : BaseAIContextMenuItem {
+    [Inject] IAIExtensionsContainer? aIExtensionsContainer { get; set; }
+
+    protected override string DefaultItemText => "Rewrite like Shakespeare";
+
+    protected override Task<TextResponse> GetCommandTextResult(string text) {
+        var customExtension = aIExtensionsContainer.CreateCustomPromptExtension();
+        return customExtension.ExecuteAsync(new CustomPromptRequest("Rewrite the following text in William Shakespeare style.", text));
+    }
+}
+```
+
+Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.AdditionalItems?v=24.2) and populate it with commands in the following manner:
 
 ```razor
 @using DevExpress.AIIntegration.Blazor.RichEdit
 @using DevExpress.Blazor.RichEdit
 
 <DxRichEdit DocumentContent="DocumentContent" CssClass="my-editor">
-    <AdditionalSettings>
-        <SummaryAISettings />
-        <ExplainAISettings />
-        <ProofreadAISettings />
-        <ExpandAISettings />
-        <ShortenAISettings />
-        <CustomAISettings />
-        <RewriteAISettings />
-        <ToneAISettings />
-        <TranslateAISettings Languages="@("German, French, Chinese")" />
-    </AdditionalSettings>
+    <AdditionalItems>
+        <ShakespeareAIContextMenuItem />
+        <SummarizeAIContextMenuItem />
+        <ExplainAIContextMenuItem />
+        <ProofreadAIContextMenuItem />
+        <ExpandAIContextMenuItem />
+        <ShortenAIContextMenuItem />
+        <AskAssistantAIContextMenuItem />
+        <ChangeStyleAIContextMenuItem />
+        <ChangeToneAIContextMenuItem />
+        <TranslateAIContextMenuItem Languages="@("German, French, Chinese")" />
+    </AdditionalItems>
 </DxRichEdit>
 ```
 
 ![](richedit.png)
 
-### Enable AI-powered extension for the DevExpress HTML Editor
+### Enable AI-powered extension for the DevExpress Blazor HTML Editor
 
-The AI-powered extension for our HTML Editor adds AI-related commands to the editor's toolbar.
+The AI-powered extension for our Blazor HTML Editor adds AI-related commands to the editor's toolbar.
 
-Declare DxHtmlEditor's `AdditionalSettings` and populate it with commands in the following manner:
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.HtmlEditor?v=24.2) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** toolbar item.
+
+```csharp
+public class ShakespeareAIToolbarItem: BaseAIToolbarItem {
+    [Inject] IAIExtensionsContainer? aIExtensionsContainer { get; set; }
+
+    protected override string DefaultItemText => "Rewrite like Shakespeare";
+
+    protected override Task<TextResponse> GetCommandTextResult(string text) {
+        var customExtension = aIExtensionsContainer.CreateCustomPromptExtension();
+        return customExtension.ExecuteAsync(new CustomPromptRequest("Rewrite the following text in William Shakespeare style.", text));
+    }
+}
+```
+
+Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.AdditionalItems?v=24.2) and populate it with commands in the following manner:
 
 ```razor
+@using DevExpress.AI.Samples.Blazor.Editors.Components.AdditionalItems
 @using DevExpress.AIIntegration.Blazor.HtmlEditor
 
 <DxHtmlEditor @bind-Markup="Value" CssClass="my-editor" BindMarkupMode="HtmlEditorBindMarkupMode.OnLostFocus">
-    <AdditionalSettings>
-        <SummaryAISettings />
-        <ExplainAISettings />
-        <ProofreadAISettings />
-        <ExpandAISettings />
-        <ShortenAISettings />
-        <CustomAISettings />
-        <RewriteAISettings />
-        <ToneAISettings />
-        <TranslateAISettings Languages="@("German, French, Chinese")" />
-    </AdditionalSettings>
+    <AdditionalItems>
+        <ShakespeareAIToolbarItem />
+        <SummarizeAIToolbarItem />
+        <ExplainAIToolbarItem />
+        <ProofreadAIToolbarItem />
+        <ExpandAIToolbarItem />
+        <ShortenAIToolbarItem />
+        <AskAssistantAIToolbarItem />
+        <ChangeStyleAIToolbarItem />
+        <ChangeToneAIToolbarItem />
+        <TranslateAIToolbarItem Languages="@("German, French, Chinese")" />
+    </AdditionalItems>
 </DxHtmlEditor>
 ```
 
@@ -98,14 +136,15 @@ Declare DxHtmlEditor's `AdditionalSettings` and populate it with commands in the
 
 * [RichEdit.razor](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/Pages/RichEdit.razor)
 * [HtmlEditor.razor](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/Pages/HtmlEditor.razor)
+* [ShakespeareAIContextMenuItem.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/AdditionalItems/ShakespeareAIContextMenuItem.cs)
+* [ShakespeareAIToolbarItem.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Components/AdditionalItems/ShakespeareAIToolbarItem.cs)
 * [Program.cs](./CS/DevExpress.AI.Samples.Blazor.Editors/Program.cs)
 
-<!-- add later
 ## Documentation
 
-- link
-- link
--->
+* [DevExpress AI-powered Extensions for Blazor](https://docs.devexpress.com/Blazor/405228/ai-powered-extensions?v=24.2)
+* [AI-powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
+* [AI-powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
 
 ## More Examples
 
