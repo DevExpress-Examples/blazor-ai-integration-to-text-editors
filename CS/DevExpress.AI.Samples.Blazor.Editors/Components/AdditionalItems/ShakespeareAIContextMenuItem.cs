@@ -1,5 +1,5 @@
 using DevExpress.AIIntegration;
-using DevExpress.AIIntegration.Blazor.RichEdit.Internal;
+using DevExpress.AIIntegration.Blazor.RichEdit;
 using DevExpress.AIIntegration.Extensions;
 using Microsoft.AspNetCore.Components;
 

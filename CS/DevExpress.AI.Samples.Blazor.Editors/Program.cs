@@ -13,13 +13,13 @@ builder.Services.AddRazorComponents()
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
 
+IChatClient chatClient = new AzureOpenAIClient(
+    new Uri(azureOpenAIEndpoint),
+    new AzureKeyCredential(azureOpenAIKey)).AsChatClient("gpt4o");
+
 builder.Services.AddDevExpressBlazor();
-builder.Services.AddDevExpressAI((config) => {
-    var client = new AzureOpenAIClient(
-        new Uri(azureOpenAIEndpoint),
-        new AzureKeyCredential(azureOpenAIKey)).AsChatClient("gpt4o");
-    config.RegisterChatClient(client);
-});
+builder.Services.AddChatClient(config => config.Use(chatClient));
+builder.Services.AddDevExpressAI();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
