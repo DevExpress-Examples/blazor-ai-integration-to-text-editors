@@ -14,6 +14,7 @@ Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpres
 * **Ask AI Assistant** allows user to process text based on a custom prompt.
 * **Change Style** rewrite text using a specified style.
 * **Change Tone** rewrite text using a specified tone.
+* **Describe Picture** generates the description for an image (for Rich Text Editor only).
 * **Expand** expands text.
 * **Explain** explains text.
 * **Proofread** proofreads text.
@@ -31,7 +32,6 @@ Add the following code to the _Program.cs_ file to register AI services in the a
 ```cs
 using Azure;
 using Azure.AI.OpenAI;
-using DevExpress.AI.Samples.Blazor.Editors.Components;
 using Microsoft.Extensions.AI;
 ...
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
