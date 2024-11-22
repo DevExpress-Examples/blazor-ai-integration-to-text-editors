@@ -1,25 +1,25 @@
-﻿using Azure.AI.OpenAI;
-using Azure;
+﻿using Azure;
+using Azure.AI.OpenAI;
 using DevExpress.AI.Samples.Blazor.Editors.Components;
-using DevExpress.AIIntegration;
+using Microsoft.Extensions.AI;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-.AddInteractiveServerComponents();
+    .AddInteractiveServerComponents();
 
 string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
+string deploymentName = string.Empty;
+
+IChatClient chatClient = new AzureOpenAIClient(
+    new Uri(azureOpenAIEndpoint),
+    new AzureKeyCredential(azureOpenAIKey)).AsChatClient(deploymentName);
 
 builder.Services.AddDevExpressBlazor();
-builder.Services.AddDevExpressAI((config) => {
-    var client = new AzureOpenAIClient(
-        new Uri(azureOpenAIEndpoint),
-        new AzureKeyCredential(azureOpenAIKey));
-    config.RegisterChatClientOpenAIService(client, "gpt4o");
-    config.RegisterOpenAIAssistants(client, "gpt4o");
-});
+builder.Services.AddChatClient(config => config.Use(chatClient));
+builder.Services.AddDevExpressAI();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,31 +1,36 @@
 ﻿@page "/"
 @using DevExpress.AIIntegration.Blazor.RichEdit
+@using DevExpress.AI.Samples.Blazor.Editors.Components.AdditionalItems
 @using DevExpress.Blazor.RichEdit
 @using System.Reflection
 
 <DxRichEdit DocumentContent="DocumentContent" CssClass="my-editor">
-    <AdditionalSettings>
-        <SummaryAISettings />
-        <ExplainAISettings />
-        <ProofreadAISettings />
-        <ExpandAISettings />
-        <ShortenAISettings />
-        <CustomAISettings />
-        <RewriteAISettings />
-        <ToneAISettings />
-        <TranslateAISettings Languages="@("German, French, Chinese")" />
-    </AdditionalSettings>
+    <AdditionalItems>
+        <ShakespeareAIContextMenuItem />
+        <SummarizeAIContextMenuItem />
+        <ExplainAIContextMenuItem />
+        <ProofreadAIContextMenuItem />
+        <ExpandAIContextMenuItem />
+        <ShortenAIContextMenuItem />
+        <AskAssistantAIContextMenuItem />
+        <ChangeStyleAIContextMenuItem />
+        <ChangeToneAIContextMenuItem />
+        <TranslateAIContextMenuItem Languages="@("German, French, Chinese")" />
+    </AdditionalItems>
 </DxRichEdit>
 
 @code {
     const string DocumentResourceName = "DevExpress.AI.Samples.Blazor.Editors.Docs.Example.docx";
     byte[] DocumentContent { get; set; }
-    protected override void OnInitialized() {
-        using(MemoryStream ms = new MemoryStream()) {
+    protected override void OnInitialized()
+    {
+        using (var ms = new MemoryStream())
+        {
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(DocumentResourceName);
-            stream.CopyTo(ms);
+            stream?.CopyTo(ms);
             DocumentContent = ms.ToArray();
         }
+    
         base.OnInitialized();
     }
 }
