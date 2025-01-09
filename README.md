@@ -148,9 +148,15 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
 * [AI-powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
 * [AI-powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
 
+## Online Demo
+
+* [AI-powered Extensions: HTML Editor](https://demos.devexpress.com/blazor/AI/AIIntegrationHtmlEditor)
+* [AI-powered Extensions: Rich Text Editor](https://demos.devexpress.com/blazor/AI/AIIntegrationRichEdit)
+
 ## More Examples
 
 * [AI Chat for Blazor - How to add DxAIChat component in Blazor, MAUI, WPF, and WinForms applications](https://github.com/DevExpress-Examples/devexpress-ai-chat-samples)
+* [Incorporate an AI Assistant (Azure OpenAI) in your next DevExpress-powered Blazor app](https://github.com/DevExpress-Examples/blazor-grid-and-report-viewer-integrate-ai-assistant)
 
 <!-- feedback -->
 ## Does this example address your development requirements/objectives?
