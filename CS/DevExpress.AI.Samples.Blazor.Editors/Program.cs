@@ -18,7 +18,7 @@ IChatClient chatClient = new AzureOpenAIClient(
     new AzureKeyCredential(azureOpenAIKey)).AsChatClient(deploymentName);
 
 builder.Services.AddDevExpressBlazor();
-builder.Services.AddChatClient(config => config.Use(chatClient));
+builder.Services.AddChatClient(chatClient);
 builder.Services.AddDevExpressAI();
 var app = builder.Build();
 
