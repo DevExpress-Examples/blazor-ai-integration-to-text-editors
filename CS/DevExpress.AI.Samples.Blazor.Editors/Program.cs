@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿using System.ClientModel;
 using Azure.AI.OpenAI;
 using DevExpress.AI.Samples.Blazor.Editors.Components;
 using Microsoft.Extensions.AI;
@@ -13,9 +13,11 @@ string azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_EN
 string azureOpenAIKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
 string deploymentName = string.Empty;
 
-IChatClient chatClient = new AzureOpenAIClient(
+var azureOpenAIClient = new AzureOpenAIClient(
     new Uri(azureOpenAIEndpoint),
-    new AzureKeyCredential(azureOpenAIKey)).AsChatClient(deploymentName);
+    new ApiKeyCredential(azureOpenAIKey));
+
+var chatClient = azureOpenAIClient.GetChatClient(deploymentName).AsIChatClient();
 
 builder.Services.AddDevExpressBlazor();
 builder.Services.AddChatClient(chatClient);
