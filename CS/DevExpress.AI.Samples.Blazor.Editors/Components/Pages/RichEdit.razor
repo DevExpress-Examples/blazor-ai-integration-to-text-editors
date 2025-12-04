@@ -5,7 +5,7 @@
 @using System.Reflection
 
 <DxRichEdit DocumentContent="DocumentContent" CssClass="my-editor">
-    <AdditionalItems>
+    <Extensions>
         <ShakespeareAIContextMenuItem />
         <SummarizeAIContextMenuItem />
         <ExplainAIContextMenuItem />
@@ -16,7 +16,7 @@
         <ChangeStyleAIContextMenuItem />
         <ChangeToneAIContextMenuItem />
         <TranslateAIContextMenuItem Languages="@("German, French, Chinese")" />
-    </AdditionalItems>
+    </Extensions>
 </DxRichEdit>
 
 @code {

@@ -3,7 +3,7 @@
 @using DevExpress.AIIntegration.Blazor.HtmlEditor
 
 <DxHtmlEditor @bind-Markup="Value" CssClass="my-editor" BindMarkupMode="HtmlEditorBindMarkupMode.OnLostFocus">
-    <AdditionalItems>
+    <Extensions>
         <ShakespeareAIToolbarItem />
         <SummarizeAIToolbarItem />
         <ExplainAIToolbarItem />
@@ -14,7 +14,7 @@
         <ChangeStyleAIToolbarItem />
         <ChangeToneAIToolbarItem />
         <TranslateAIToolbarItem Languages="@("German, French, Chinese")" />
-    </AdditionalItems>
+    </Extensions>
 </DxHtmlEditor>
 
 @code {

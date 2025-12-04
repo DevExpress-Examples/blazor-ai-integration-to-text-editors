@@ -10,7 +10,7 @@ This example enables AI-powered extensions for both the DevExpress Blazor Rich T
 
 ## Implementation Details
 
-Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `AdditionalItems` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
+Both the DevExpress Blazor Rich Text Editor ([DxRichEdit](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit)) and Blazor HTML Editor ([DxHtmlEditor](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor)) ship with an `Extensions` property. You can populate this property with commands and allow users to process editor text as needs dictate. Available commands for both editors are as follows:
 
 * **Ask AI Assistant** allows user to process text based on a custom prompt.
 * **Change Style** rewrite text using a specified style.
@@ -54,9 +54,8 @@ builder.Services.AddDevExpressAI();
 > [!Note]
 > We use the following versions of the `Microsoft.Extensions.AI.*` libraries in our in our `v25.1.3+` source code:
 >
-> * `Microsoft.Extensions.AI` | **9.5.0**
-> * `Microsoft.Extensions.AI.Abstractions` | **9.5.0**
-> * `Microsoft.Extensions.AI.OpenAI` | **9.5.0-preview.1.25265.7**
+> * `Microsoft.Extensions.AI.Abstractions` | **9.7.1**
+> * `Microsoft.Extensions.AI.OpenAI` | **9.7.1-preview.1.25365.4**
 >
 > We do not guarantee compatibility or correct operation with higher versions. Refer to the following announcement for additional information: [DevExpress.AIIntegration moves to a stables version](https://supportcenter.devexpress.com/ticket/details/t1292705/devexpress-aiintegration-references-stable-versions-of-microsoft-ai-packages).
 
@@ -79,14 +78,14 @@ public class ShakespeareAIContextMenuItem : BaseAIContextMenuItem {
 }
 ```
 
-Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.AdditionalItems?v=24.2) and populate it with commands in the following manner:
+Declare DxRichEdit's [Extensions](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.Extensions?v=25.2) and populate it with commands in the following manner:
 
 ```razor
 @using DevExpress.AIIntegration.Blazor.RichEdit
 @using DevExpress.Blazor.RichEdit
 
 <DxRichEdit DocumentContent="DocumentContent" CssClass="my-editor">
-    <AdditionalItems>
+    <Extensions>
         <ShakespeareAIContextMenuItem />
         <SummarizeAIContextMenuItem />
         <ExplainAIContextMenuItem />
@@ -97,7 +96,7 @@ Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExp
         <ChangeStyleAIContextMenuItem />
         <ChangeToneAIContextMenuItem />
         <TranslateAIContextMenuItem Languages="@("German, French, Chinese")" />
-    </AdditionalItems>
+    </Extensions>
 </DxRichEdit>
 ```
 
@@ -122,14 +121,14 @@ public class ShakespeareAIToolbarItem: BaseAIToolbarItem {
 }
 ```
 
-Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.AdditionalItems?v=24.2) and populate it with commands in the following manner:
+Declare DxHtmlEditor's [Extensions](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.Extensions?v=25.2) and populate it with commands in the following manner:
 
 ```razor
 @using DevExpress.AI.Samples.Blazor.Editors.Components.AdditionalItems
 @using DevExpress.AIIntegration.Blazor.HtmlEditor
 
 <DxHtmlEditor @bind-Markup="Value" CssClass="my-editor" BindMarkupMode="HtmlEditorBindMarkupMode.OnLostFocus">
-    <AdditionalItems>
+    <Extensions>
         <ShakespeareAIToolbarItem />
         <SummarizeAIToolbarItem />
         <ExplainAIToolbarItem />
@@ -140,7 +139,7 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
         <ChangeStyleAIToolbarItem />
         <ChangeToneAIToolbarItem />
         <TranslateAIToolbarItem Languages="@("German, French, Chinese")" />
-    </AdditionalItems>
+    </Extensions>
 </DxHtmlEditor>
 ```
 
