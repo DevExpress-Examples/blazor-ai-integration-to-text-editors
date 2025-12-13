@@ -48,13 +48,10 @@ builder.Services.AddChatClient(chatClient);
 builder.Services.AddDevExpressAI();
 ```
 
-> [!Tip]
-> Refer to the following help topic for instructions on registering OpenAI, Azure OpenAI, Ollama, and Semantic Kernel: [Register AI Clients](https://docs.devexpress.com/CoreLibraries/405204/ai-powered-extensions#register-ai-clients).
-
 > [!Note]
-> We use the following versions of the `Microsoft.Extensions.AI.*` libraries in our in our `v25.1.3+` source code:
+> We use the following versions of the `Microsoft.Extensions.AI.*` libraries in our in our `v25.2.2+` source code:
 >
-> * `Microsoft.Extensions.AI.Abstractions` | **9.7.1**
+> * `Microsoft.Extensions.AI` | **9.7.1**
 > * `Microsoft.Extensions.AI.OpenAI` | **9.7.1-preview.1.25365.4**
 >
 > We do not guarantee compatibility or correct operation with higher versions. Refer to the following announcement for additional information: [DevExpress.AIIntegration moves to a stables version](https://supportcenter.devexpress.com/ticket/details/t1292705/devexpress-aiintegration-references-stable-versions-of-microsoft-ai-packages).
@@ -176,3 +173,4 @@ Declare DxHtmlEditor's [Extensions](https://docs.devexpress.com/Blazor/DevExpres
 
 (you will be redirected to DevExpress.com to submit your response)
 <!-- feedback end -->
+
