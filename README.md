@@ -64,7 +64,7 @@ builder.Services.AddDevExpressAI();
 
 AI-powered extension for our Blazor Rich Text Editor adds AI-related commands to the editor's context menu.
 
-You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.RichEdit?v=24.2) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** context menu item.
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.RichEdit?v=25.1) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** context menu item.
 
 ```csharp
 public class ShakespeareAIContextMenuItem : BaseAIContextMenuItem {
@@ -79,7 +79,7 @@ public class ShakespeareAIContextMenuItem : BaseAIContextMenuItem {
 }
 ```
 
-Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.AdditionalItems?v=24.2) and populate it with commands in the following manner:
+Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.RichEdit.DxRichEdit.AdditionalItems?v=25.1) and populate it with commands in the following manner:
 
 ```razor
 @using DevExpress.AIIntegration.Blazor.RichEdit
@@ -107,7 +107,7 @@ Declare DxRichEdit's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExp
 
 The AI-powered extension for our Blazor HTML Editor adds AI-related commands to the editor's toolbar.
 
-You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.HtmlEditor?v=24.2) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** toolbar item.
+You can add [predefined commands](https://docs.devexpress.com/Blazor/DevExpress.AIIntegration.Blazor.HtmlEditor?v=25.1) or implement custom commands as necessary. This example introduces a **Rewrite like Shakespeare** toolbar item.
 
 ```csharp
 public class ShakespeareAIToolbarItem: BaseAIToolbarItem {
@@ -122,7 +122,7 @@ public class ShakespeareAIToolbarItem: BaseAIToolbarItem {
 }
 ```
 
-Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.AdditionalItems?v=24.2) and populate it with commands in the following manner:
+Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevExpress.Blazor.DxHtmlEditor.AdditionalItems?v=25.1) and populate it with commands in the following manner:
 
 ```razor
 @using DevExpress.AI.Samples.Blazor.Editors.Components.AdditionalItems
@@ -156,9 +156,9 @@ Declare DxHtmlEditor's [AdditionalItems](https://docs.devexpress.com/Blazor/DevE
 
 ## Documentation
 
-* [DevExpress AI-powered Extensions for Blazor](https://docs.devexpress.com/Blazor/405228/ai-powered-extensions?v=24.2)
-* [AI-powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=24.2)
-* [AI-powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=24.2)
+* [DevExpress AI-powered Extensions for Blazor](https://docs.devexpress.com/Blazor/405228/ai-powered-extensions?v=25.1)
+* [AI-powered Extension for Blazor Rich Text Editor](https://docs.devexpress.com/Blazor/405193/components/rich-edit/ai-integration?v=25.1)
+* [AI-powered Extension for Blazor HTML Editor](https://docs.devexpress.com/Blazor/405187/components/html-editor/ai-integration?v=25.1)
 
 ## Online Demo
 
